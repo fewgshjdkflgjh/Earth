@@ -1,4 +1,4 @@
 {
-  "roads_1": { "name": "Main Street", "coordinates": [ ... ] },
-  "roads_2": { "name": "Broadway", "coordinates": [ ... ] }
+  "roads_1": { "name": "Main Street", "coordinates": [[51.5074, -0.1278], [51.5075, -0.1279]] },
+  "roads_2": { "name": "Broadway", "coordinates": [[40.7580, -73.9855], [40.7590, -73.9865]] }
 }
