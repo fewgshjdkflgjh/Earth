@@ -1,5 +1,5 @@
-const GITHUB_USERNAME = "your-github-username"; // Replace with your GitHub username
-const REPO_NAME = "earth-roads"; // Replace with your repo name
+const GITHUB_USERNAME = "fewgshjdkflgjh"; // Replace with your GitHub username
+const REPO_NAME = "Earth"; // Replace with your repo name
 const FILE_PATH = "roads.json";
 const ACCESS_TOKEN = "your-github-access-token"; // Replace with your token
 
