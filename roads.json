@@ -1,1 +1,4 @@
-{}
+{
+  "roads_1": { "name": "Main Street", "coordinates": [ ... ] },
+  "roads_2": { "name": "Broadway", "coordinates": [ ... ] }
+}
