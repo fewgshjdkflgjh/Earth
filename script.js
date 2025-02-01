@@ -44,17 +44,20 @@ async function loadRoadsFromGitHub() {
         if (!response.ok) throw new Error("Failed to fetch roads.json");
 
         const fileData = await response.json();
-        const decodedContent = atob(fileData.content);
-        return JSON.parse(decodedContent);
-    } catch {
-        return {};
+
+        // Decode Base64 content from GitHub
+        const decodedContent = atob(fileData.content); // Decode the Base64 string
+        return JSON.parse(decodedContent); // Parse the JSON data
+    } catch (error) {
+        console.error("Error loading roads from GitHub:", error);
+        return {}; // Return empty object if there is an error
     }
 }
 
 // Save roads to GitHub
 async function saveRoadsToGitHub(key, data) {
-    const savedData = await loadRoadsFromGitHub();
-    savedData[key] = data;
+    const savedData = await loadRoadsFromGitHub(); // Load existing roads data
+    savedData[key] = data; // Add new data
 
     // Get file SHA (required for GitHub commits)
     const response = await fetch(GITHUB_API_URL, {
@@ -62,21 +65,22 @@ async function saveRoadsToGitHub(key, data) {
     });
 
     const fileData = await response.json();
-    const sha = fileData.sha;
+    const sha = fileData.sha; // Get the SHA of the file
 
     const commitData = {
-        message: "Updated roads data",
-        content: btoa(JSON.stringify(savedData, null, 2)),
-        sha
+        message: "Updated roads data", // Commit message
+        content: btoa(JSON.stringify(savedData, null, 2)), // Base64 encode the updated data
+        sha // Provide the file SHA to update the existing file
     };
 
+    // Update the file on GitHub
     fetch(GITHUB_API_URL, {
-        method: "PUT",
+        method: "PUT", // PUT method to update the file
         headers: {
             Authorization: `token ${ACCESS_TOKEN}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(commitData)
+        body: JSON.stringify(commitData) // Send the commit data
     })
         .then(response => response.json())
         .then(data => console.log("Roads saved to GitHub:", data))
