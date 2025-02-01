@@ -1,10 +1,7 @@
 (function() {
-    const GITHUB_USERNAME = "fewgshjdkflgjh"; // Replace with your GitHub username
-    const REPO_NAME = "Earth"; // Replace with your repo name
-    const FILE_PATH = "roads.json";
     const ACCESS_TOKEN = "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"; // Replace with your token
 
-    const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+    const GITHUB_API_URL = `https://api.github.com/repos/fewgshjdkflgjh/Earth/contents/roads.json`;
 
     async function fetchRoads(bounds) {
         const key = `roads_${bounds.toBBoxString()}`;
